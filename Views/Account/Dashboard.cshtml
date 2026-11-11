@@ -1,0 +1,26 @@
+@{
+    ViewData["Title"] = "Customer Dashboard";
+    var userName = Context.Session.GetString("UserName") ?? "Customer";
+    var userEmail = Context.Session.GetString("UserEmail") ?? "";
+}
+
+<section class="page-header">
+    <p class="eyebrow">Customer Area</p>
+    <h1>Welcome, @userName</h1>
+    <p>You are logged in as a customer. You can plan a new trip, view destinations, and generate budget details.</p>
+</section>
+
+<div class="dashboard-grid">
+    <article class="dashboard-card">
+        <h3>Account</h3>
+        <p><strong>Name:</strong> @userName</p>
+        <p><strong>Email:</strong> @userEmail</p>
+        <p><strong>Role:</strong> Customer</p>
+    </article>
+
+    <article class="dashboard-card">
+        <h3>Plan Your Trip</h3>
+        <p>Create a travel plan with daily cost breakdown and remaining budget after each day.</p>
+        <a class="btn primary" asp-controller="Planner" asp-action="Index">Plan My Trip</a>
+    </article>
+</div>

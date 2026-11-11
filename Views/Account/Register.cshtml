@@ -1,0 +1,51 @@
+@model RegisterViewModel
+@{
+    ViewData["Title"] = "Customer Sign Up";
+}
+
+<section class="auth-page">
+    <div class="auth-card wide">
+        <p class="eyebrow">Customer Signup</p>
+        <h1>Create Customer Account</h1>
+        <p class="muted-text">Customers can create an account here. Admin accounts are created by the system only and use the same login page.</p>
+
+        <form asp-action="Register" method="post">
+            @Html.AntiForgeryToken()
+            <div asp-validation-summary="ModelOnly" class="validation-summary"></div>
+
+            <div class="form-group">
+                <label asp-for="FullName"></label>
+                <input asp-for="FullName" placeholder="Enter full name" />
+                <span asp-validation-for="FullName" class="field-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Email"></label>
+                <input asp-for="Email" placeholder="example@email.com" />
+                <span asp-validation-for="Email" class="field-error"></span>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label asp-for="Password"></label>
+                    <input asp-for="Password" placeholder="Create password" />
+                    <span asp-validation-for="Password" class="field-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="ConfirmPassword"></label>
+                    <input asp-for="ConfirmPassword" placeholder="Confirm password" />
+                    <span asp-validation-for="ConfirmPassword" class="field-error"></span>
+                </div>
+            </div>
+
+            <button type="submit" class="btn primary full-width">Sign Up as Customer</button>
+        </form>
+
+        <p class="auth-link">Already have an account? <a asp-controller="Account" asp-action="Login">Login here</a></p>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

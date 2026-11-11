@@ -1,0 +1,72 @@
+@model AddDestinationViewModel
+@{
+    ViewData["Title"] = "Add Destination";
+}
+
+<section class="page-header">
+    <p class="eyebrow">Admin Area</p>
+    <h1>Add New Destination</h1>
+    <p>Only admin users can add destinations. After adding a destination, it will appear on the public destination listing and can be used in the trip planner.</p>
+</section>
+
+<div class="form-layout single-column">
+    <form asp-action="AddDestination" method="post" class="planner-form">
+        @Html.AntiForgeryToken()
+        <div asp-validation-summary="ModelOnly" class="validation-summary"></div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label asp-for="Name"></label>
+                <input asp-for="Name" placeholder="Example: Naran Kaghan" />
+                <span asp-validation-for="Name" class="field-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Region"></label>
+                <input asp-for="Region" placeholder="Example: Khyber Pakhtunkhwa" />
+                <span asp-validation-for="Region" class="field-error"></span>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label asp-for="EstimatedDailyBudget"></label>
+                <input asp-for="EstimatedDailyBudget" placeholder="Example: 11000" />
+                <span asp-validation-for="EstimatedDailyBudget" class="field-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="BestFor"></label>
+                <input asp-for="BestFor" placeholder="Example: Family, Nature, Adventure" />
+                <span asp-validation-for="BestFor" class="field-error"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="ImageUrl"></label>
+            <input asp-for="ImageUrl" placeholder="Optional image URL" />
+            <span asp-validation-for="ImageUrl" class="field-error"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Description"></label>
+            <textarea asp-for="Description" rows="4" placeholder="Write a short description of this destination"></textarea>
+            <span asp-validation-for="Description" class="field-error"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="HighlightsText"></label>
+            <textarea asp-for="HighlightsText" rows="4" placeholder="Write highlights separated by commas, for example: Lake Saif ul Malook, Lulusar Lake, Babusar Top"></textarea>
+            <span asp-validation-for="HighlightsText" class="field-error"></span>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn primary">Save Destination</button>
+            <a class="btn secondary" asp-controller="Admin" asp-action="Dashboard">Cancel</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

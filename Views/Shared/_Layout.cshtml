@@ -1,0 +1,60 @@
+@{
+    var userName = Context.Session.GetString("UserName");
+    var userRole = Context.Session.GetString("UserRole");
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Travel Planner MVC</title>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    <header class="topbar">
+        <div class="container nav-wrap">
+            <a class="brand" asp-controller="Home" asp-action="Index">Travel Planner</a>
+            <nav>
+                <a asp-controller="Home" asp-action="Index">Home</a>
+                <a asp-controller="Destinations" asp-action="Index">Destinations</a>
+                <a asp-controller="Planner" asp-action="Index">Plan Trip</a>
+                <a asp-controller="Home" asp-action="About">About</a>
+
+                @if (string.IsNullOrEmpty(userName))
+                {
+                    <a asp-controller="Account" asp-action="Login">Login</a>
+                    <a asp-controller="Account" asp-action="Register">Customer Sign Up</a>
+                }
+                else
+                {
+                    if (userRole == "Admin")
+                    {
+                        <a asp-controller="Admin" asp-action="Dashboard">Admin Dashboard</a>
+                        <a asp-controller="Admin" asp-action="AddDestination">Add Destination</a>
+                    }
+                    else
+                    {
+                        <a asp-controller="Account" asp-action="Dashboard">My Account</a>
+                    }
+                    <span class="nav-user">Hi, @userName</span>
+                    <form asp-controller="Account" asp-action="Logout" method="post" class="logout-form">
+                        <button type="submit" class="nav-link-button">Logout</button>
+                    </form>
+                }
+            </nav>
+        </div>
+    </header>
+
+    <main class="container main-content">
+        @RenderBody()
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; @DateTime.Now.Year Travel Planner MVC. Built with ASP.NET Core MVC.</p>
+        </div>
+    </footer>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,38 @@
+@model IEnumerable<Destination>
+@{
+    ViewData["Title"] = "Home";
+}
+
+<section class="hero">
+    <div class="hero-text">
+        <p class="eyebrow">ASP.NET Core MVC Project</p>
+        <h1>Plan your next trip with budget, days, and destination.</h1>
+        <p>
+            This travel planner creates a simple day-by-day plan based on your destination,
+            budget, duration, travelers, and travel style.
+        </p>
+    </div>
+</section>
+
+<section class="section-heading">
+    <h2>Popular Destinations</h2>
+    <p>Start with one of these sample destinations.</p>
+</section>
+
+<div class="cards-grid">
+    @foreach (var destination in Model)
+    {
+        <article class="destination-card">
+            <img src="@destination.ImageUrl" alt="@destination.Name" />
+            <div class="card-body">
+                <span class="tag">@destination.Region</span>
+                <h3>@destination.Name</h3>
+                <p>@destination.Description</p>
+                <div class="card-actions">
+                    <a class="btn small" asp-controller="Destinations" asp-action="Details" asp-route-id="@destination.Id">Details</a>
+                    <a class="btn small primary" asp-controller="Planner" asp-action="Index" asp-route-destination="@destination.Name">Plan</a>
+                </div>
+            </div>
+        </article>
+    }
+</div>

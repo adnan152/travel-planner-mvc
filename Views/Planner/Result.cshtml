@@ -1,0 +1,106 @@
+@model TripPlan
+@{
+    ViewData["Title"] = "Trip Plan Result";
+    var budgetClass = Model.RemainingBudget >= 0 ? "positive" : "negative";
+}
+
+<section class="result-header">
+    <div>
+        <p class="eyebrow">Generated Plan</p>
+        <h1>@($"{Model.Request.Duration}-Day {Model.Request.TravelType} Trip to {Model.Destination?.Name}")</h1>
+        <p>@Model.BudgetStatus</p>
+    </div>
+    <a class="btn secondary" asp-controller="Planner" asp-action="Index" asp-route-destination="@Model.Destination?.Name">Create Another Plan</a>
+</section>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <span>Total Budget</span>
+        <strong>@Model.Request.Budget.ToString("N0") PKR</strong>
+    </div>
+    <div class="stat-card">
+        <span>Estimated Cost</span>
+        <strong>@Model.EstimatedTotalCost.ToString("N0") PKR</strong>
+    </div>
+    <div class="stat-card">
+        <span>Remaining Budget</span>
+        <strong class="@budgetClass">@Model.RemainingBudget.ToString("N0") PKR</strong>
+    </div>
+    <div class="stat-card">
+        <span>Travelers</span>
+        <strong>@Model.Request.Travelers</strong>
+    </div>
+</div>
+
+<section class="info-panel">
+    <h2>Daily Budget Breakdown</h2>
+    <p class="muted-text">This shows how much money will be used on day one, day two, day three, and so on.</p>
+    <div class="table-wrap">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Day</th>
+                    <th>Transport</th>
+                    <th>Hotel</th>
+                    <th>Food</th>
+                    <th>Activities</th>
+                    <th>Used Today</th>
+                    <th>Remaining After Day</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var day in Model.Days)
+                {
+                    var remainingClass = day.RemainingBudgetAfterDay >= 0 ? "positive" : "negative";
+                    <tr>
+                        <td>Day @day.DayNumber</td>
+                        <td>@day.TransportCost.ToString("N0") PKR</td>
+                        <td>@day.AccommodationCost.ToString("N0") PKR</td>
+                        <td>@day.FoodCost.ToString("N0") PKR</td>
+                        <td>@day.ActivityCost.ToString("N0") PKR</td>
+                        <td><strong>@day.TotalCost.ToString("N0") PKR</strong></td>
+                        <td><strong class="@remainingClass">@day.RemainingBudgetAfterDay.ToString("N0") PKR</strong></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<section class="timeline">
+    @foreach (var day in Model.Days)
+    {
+        var remainingClass = day.RemainingBudgetAfterDay >= 0 ? "positive" : "negative";
+        <article class="day-card">
+            <div class="day-number">Day @day.DayNumber</div>
+            <div>
+                <div class="day-title-row">
+                    <h3>@day.Title</h3>
+                    <span class="day-cost-pill">Used: @day.TotalCost.ToString("N0") PKR</span>
+                </div>
+                <p><strong>Morning:</strong> @day.Morning</p>
+                <p><strong>Afternoon:</strong> @day.Afternoon</p>
+                <p><strong>Evening:</strong> @day.Evening</p>
+
+                <div class="cost-grid">
+                    <div><span>Transport</span><strong>@day.TransportCost.ToString("N0") PKR</strong></div>
+                    <div><span>Hotel</span><strong>@day.AccommodationCost.ToString("N0") PKR</strong></div>
+                    <div><span>Food</span><strong>@day.FoodCost.ToString("N0") PKR</strong></div>
+                    <div><span>Activities</span><strong>@day.ActivityCost.ToString("N0") PKR</strong></div>
+                    <div><span>Total Used</span><strong>@day.TotalCost.ToString("N0") PKR</strong></div>
+                    <div><span>Remaining</span><strong class="@remainingClass">@day.RemainingBudgetAfterDay.ToString("N0") PKR</strong></div>
+                </div>
+            </div>
+        </article>
+    }
+</section>
+
+<section class="info-panel">
+    <h2>Travel Tips</h2>
+    <ul class="nice-list">
+        @foreach (var tip in Model.Tips)
+        {
+            <li>@tip</li>
+        }
+    </ul>
+</section>

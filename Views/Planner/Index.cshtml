@@ -1,0 +1,85 @@
+@model TripRequest
+@{
+    ViewData["Title"] = "Plan Trip";
+    var destinations = ViewBag.Destinations as IEnumerable<Destination> ?? Enumerable.Empty<Destination>();
+}
+
+<section class="page-header">
+    <p class="eyebrow">Create Plan</p>
+    <h1>Plan My Trip</h1>
+    <p>Fill in your destination, budget, days, and travel style. The system will generate a basic itinerary.</p>
+</section>
+
+<div class="form-layout">
+    <form asp-action="Generate" method="post" class="planner-form">
+        @Html.AntiForgeryToken()
+        <div asp-validation-summary="ModelOnly" class="validation-summary"></div>
+
+        <div class="form-group">
+            <label asp-for="Destination"></label>
+            <select asp-for="Destination">
+                @foreach (var destination in destinations)
+                {
+                    <option value="@destination.Name">@destination.Name</option>
+                }
+            </select>
+            <span asp-validation-for="Destination" class="field-error"></span>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label asp-for="Budget"></label>
+                <input asp-for="Budget" type="number" />
+                <span asp-validation-for="Budget" class="field-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Duration"></label>
+                <input asp-for="Duration" type="number" />
+                <span asp-validation-for="Duration" class="field-error"></span>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label asp-for="Travelers"></label>
+                <input asp-for="Travelers" type="number" />
+                <span asp-validation-for="Travelers" class="field-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="TravelType"></label>
+                <select asp-for="TravelType">
+                    <option>Adventure</option>
+                    <option>Family</option>
+                    <option>Budget</option>
+                    <option>Luxury</option>
+                </select>
+                <span asp-validation-for="TravelType" class="field-error"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Notes"></label>
+            <textarea asp-for="Notes" rows="4" placeholder="Example: I want less walking, family friendly places, or halal food options."></textarea>
+            <span asp-validation-for="Notes" class="field-error"></span>
+        </div>
+
+        <button type="submit" class="btn primary full-width">Generate Trip Plan</button>
+    </form>
+
+    <aside class="side-help">
+        <h3>How it works</h3>
+        <p>The controller receives your form, the service calculates the budget, then the result view displays the itinerary.</p>
+        <ol>
+            <li>Select destination</li>
+            <li>Enter budget and duration</li>
+            <li>Choose travel type</li>
+            <li>Generate plan</li>
+        </ol>
+    </aside>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

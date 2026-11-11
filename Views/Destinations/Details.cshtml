@@ -1,0 +1,26 @@
+@model Destination
+@{
+    ViewData["Title"] = Model.Name;
+}
+
+<section class="details-hero">
+    <img src="@Model.ImageUrl" alt="@Model.Name" />
+    <div class="details-content">
+        <span class="tag">@Model.Region</span>
+        <h1>@Model.Name</h1>
+        <p>@Model.Description</p>
+        <p><strong>Estimated daily budget:</strong> @Model.EstimatedDailyBudget.ToString("N0") PKR</p>
+        <p><strong>Best for:</strong> @Model.BestFor</p>
+        <a class="btn primary" asp-controller="Planner" asp-action="Index" asp-route-destination="@Model.Name">Plan Trip to @Model.Name</a>
+    </div>
+</section>
+
+<section class="info-panel">
+    <h2>Highlights</h2>
+    <ul class="nice-list">
+        @foreach (var item in Model.Highlights)
+        {
+            <li>@item</li>
+        }
+    </ul>
+</section>

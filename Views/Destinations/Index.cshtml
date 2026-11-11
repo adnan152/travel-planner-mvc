@@ -1,0 +1,30 @@
+@model IEnumerable<Destination>
+@{
+    ViewData["Title"] = "Destinations";
+}
+
+<section class="page-header">
+    <p class="eyebrow">Explore Places</p>
+    <h1>Destinations</h1>
+    <p>Select a destination and create a travel plan according to your budget and duration.</p>
+</section>
+
+<div class="cards-grid">
+    @foreach (var destination in Model)
+    {
+        <article class="destination-card">
+            <img src="@destination.ImageUrl" alt="@destination.Name" />
+            <div class="card-body">
+                <span class="tag">@destination.Region</span>
+                <h3>@destination.Name</h3>
+                <p>@destination.Description</p>
+                <p><strong>Estimated daily budget:</strong> @destination.EstimatedDailyBudget.ToString("N0") PKR</p>
+                <p><strong>Best for:</strong> @destination.BestFor</p>
+                <div class="card-actions">
+                    <a class="btn small" asp-action="Details" asp-route-id="@destination.Id">Details</a>
+                    <a class="btn small primary" asp-controller="Planner" asp-action="Index" asp-route-destination="@destination.Name">Plan Trip</a>
+                </div>
+            </div>
+        </article>
+    }
+</div>

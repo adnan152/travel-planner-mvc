@@ -1,0 +1,104 @@
+@model AdminDashboardViewModel
+@{
+    ViewData["Title"] = "Admin Dashboard";
+    var userName = Context.Session.GetString("UserName") ?? "Admin";
+    var successMessage = TempData["SuccessMessage"] as string;
+}
+
+<section class="page-header admin-header">
+    <div>
+        <p class="eyebrow">Admin Area</p>
+        <h1>Admin Dashboard</h1>
+        <p>Welcome, @userName. Here you can review registered users, view destinations, and add new destinations.</p>
+    </div>
+    <a class="btn primary" asp-controller="Admin" asp-action="AddDestination">+ Add New Destination</a>
+</section>
+
+@if (!string.IsNullOrWhiteSpace(successMessage))
+{
+    <div class="success-alert">@successMessage</div>
+}
+
+<div class="stats-grid admin-stats">
+    <div class="stat-card">
+        <span>Total Users</span>
+        <strong>@Model.Users.Count</strong>
+    </div>
+    <div class="stat-card">
+        <span>Customers</span>
+        <strong>@Model.Users.Count(u => u.Role == "Customer")</strong>
+    </div>
+    <div class="stat-card">
+        <span>Admins</span>
+        <strong>@Model.Users.Count(u => u.Role == "Admin")</strong>
+    </div>
+    <div class="stat-card">
+        <span>Destinations</span>
+        <strong>@Model.Destinations.Count</strong>
+    </div>
+</div>
+
+<section class="info-panel">
+    <div class="panel-title-row">
+        <h2>Registered Users</h2>
+    </div>
+    <div class="table-wrap">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Created</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in Model.Users)
+                {
+                    <tr>
+                        <td>@user.Id</td>
+                        <td>@user.FullName</td>
+                        <td>@user.Email</td>
+                        <td><span class="tag">@user.Role</span></td>
+                        <td>@user.CreatedAt.ToString("dd MMM yyyy")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<section class="info-panel">
+    <div class="panel-title-row">
+        <h2>Destinations</h2>
+        <a class="btn small" asp-controller="Admin" asp-action="AddDestination">Add Destination</a>
+    </div>
+    <div class="table-wrap">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Destination</th>
+                    <th>Region</th>
+                    <th>Best For</th>
+                    <th>Daily Budget</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var destination in Model.Destinations)
+                {
+                    <tr>
+                        <td>@destination.Id</td>
+                        <td>@destination.Name</td>
+                        <td>@destination.Region</td>
+                        <td>@destination.BestFor</td>
+                        <td>@destination.EstimatedDailyBudget.ToString("N0") PKR</td>
+                        <td><a asp-controller="Destinations" asp-action="Details" asp-route-id="@destination.Id">View</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</section>
